@@ -7,5 +7,6 @@ if [ $# -eq 2 ] && [ $2 == "clean" ]; then
 fi
 
 #find $folder -name '*.pdf' -exec pdftotext {} \;
-find $folder -name '*.pdf' -print0 | xargs -0 -n1 pdftotext
+# find all pdf's from folder but exclude hidden files. then input them to pdftotext using xargs
+find $folder -name '*.pdf' -not -path '*/\.*' -print0 | xargs -0 -n1 pdftotext
 find $folder -name '*.txt'
