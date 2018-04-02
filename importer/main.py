@@ -1,4 +1,5 @@
 import logging
+import fileutils
 
 logger = logging.getLogger()
 handler = logging.StreamHandler()
@@ -10,3 +11,6 @@ logger.setLevel(logging.DEBUG)
 
 if __name__ == '__main__':
     logger.info('Launching app')
+    files = fileutils.findFiles('.','.py')
+    for filedata in files:
+        logger.info(str(filedata))
