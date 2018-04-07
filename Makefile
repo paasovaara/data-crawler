@@ -1,7 +1,8 @@
 .PHONY: init clean test
 
 init:
-	pip3 install -r requirements.txt
+	pip3 install pipenv
+	pipenv install --dev
 
 clean:
 	find . -name '*.pyc' -exec rm -f {} +
@@ -14,5 +15,5 @@ test:
 	py.test --verbose --color=yes test
 
 run-import:
-	python3 ./importer/main.py
+	pipenv run python3 ./importer/main.py
     
