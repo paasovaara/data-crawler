@@ -4,7 +4,25 @@ This project contains tools to crawl material for later endeavours, f.ex machine
 
 ## Scripts
 
-folder /scripts contain shell scripts to get the material
+folder /scripts contain shell scripts to crawl and format the material
+
+## Importer
+
+Python scripts to import the data. Use [Makefile](Makefile) to setup commands.
+
+Clean:
+
+```
+make clean
+```
+
+Running:
+
+```
+make run-import
+```
+
+
 
 ## TBD: 
 - process and store the data to simple SQL database, f.ex SQLite or similar, 
