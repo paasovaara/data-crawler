@@ -23,7 +23,7 @@ class Row(object):
         self.data = data
 
     def __repr__(self):
-        return '[' + str(self.id) + '] name: ' + self.name + ' with content: ' + self.data
+        return '[' + str(self.id) + '] name: ' + self.name + ' (from:' + self.filepath + ') with content: ' + self.data
 
 
 def rowFromResult(result):
@@ -55,14 +55,16 @@ class DataModel(object):
         if (not self.doesDbExist()):
             if (not self.createDb()):
                 logger.error('FAILED TO CREATE DATABASE')
-
+                return False
+            else:
+                return True
         else:
             logger.info('Database initialized OK')
             logger.info('Database rowcount: %s', self.count())
-            #temp = self.findByName('myname2')
+            #temp = self.findByName('main.py')
             #logger.info(str(temp))
-            #temp = Row("myname2", "myfilepath", "this is the NEW content")
-            #self.insert(temp)
+
+            return True
 
 
     def createDb(self):
@@ -81,9 +83,10 @@ class DataModel(object):
             data = (row.name, row.filepath, row.data)
             self.cursor.execute('INSERT INTO TextData (name, filepath, data) VALUES (?, ?, ?);', data)
             self.conn.commit()
-
+            return True
         except Exception as err:
             logger.error('Insert Failed, Error: %s', str(err))
+            return False
 
     def findByName(self, name):
         self.cursor.execute('SELECT * FROM TextData WHERE name = ?;', (name,))

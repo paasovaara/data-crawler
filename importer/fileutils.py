@@ -21,7 +21,7 @@ def findFiles(rootPath, fileSuffix='.txt'):
         for file in files:
             filePath = subdir + os.sep + file
             if filePath.endswith(fileSuffix):
-                logger.debug('found file %s', filePath)
+                #logger.debug('found file %s', filePath)
                 data = FileMetadata()
                 data.name = file
                 data.path = filePath
