@@ -14,6 +14,10 @@ CREATE_TABLE="""CREATE TABLE TextData(
     data TEXT
 );"""
 
+class Row(object):
+    __slots__ = 'id', 'created', 'name', 'filepath', 'data'
+
+
 class DataModel(object):
     conn = None
     c = None
@@ -36,6 +40,7 @@ class DataModel(object):
 
         else:
             logger.info('Database initialized OK')
+            logger.info('Database rowcount: %s', self.count())
 
 
     def createDb(self):
@@ -43,3 +48,10 @@ class DataModel(object):
         self.c.execute(CREATE_TABLE)
         self.conn.commit()
         return self.doesDbExist()
+
+    def count(self):
+        self.c.execute('SELECT COUNT(id) FROM TextData;')
+        result = self.c.fetchone()[0]
+        return result
+
+    
