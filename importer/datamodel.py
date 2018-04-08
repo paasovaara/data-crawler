@@ -22,22 +22,36 @@ class Row(object):
         self.filepath = filepath
         self.data = data
 
+    def __repr__(self):
+        return '[' + str(self.id) + '] name: ' + self.name + ' with content: ' + self.data
+
+
+def rowFromResult(result):
+    if result == None:
+        return None
+    row = Row(result[2], result[3], result[4])
+    row.id = result[0]
+    row.created = result[1]
+    #logger.info(str(row))
+    return row
+
+
 class DataModel(object):
     conn = None
-    c = None
+    cursor = None
 
     def __init__(self):
         self.conn = sqlite3.connect(DB_NAME)
-        self.c = self.conn.cursor()
+        self.cursor = self.conn.cursor()
 
     def doesDbExist(self):
-        self.c.execute('SELECT name FROM sqlite_master WHERE type=\'table\';')
-        result = self.c.fetchall()
+        self.cursor.execute('SELECT name FROM sqlite_master WHERE type=\'table\';')
+        result = self.cursor.fetchall()
         return (len(result) > 0)
 
     def initialize(self):
-        self.c.execute('SELECT name FROM sqlite_master WHERE type=\'table\';')
-        result = self.c.fetchall()
+        self.cursor.execute('SELECT name FROM sqlite_master WHERE type=\'table\';')
+        result = self.cursor.fetchall()
         if (not self.doesDbExist()):
             if (not self.createDb()):
                 logger.error('FAILED TO CREATE DATABASE')
@@ -45,26 +59,34 @@ class DataModel(object):
         else:
             logger.info('Database initialized OK')
             logger.info('Database rowcount: %s', self.count())
-            #temp = Row("myname", "myfilepath", "this is the content")
+            #temp = self.findByName('myname2')
+            #logger.info(str(temp))
+            #temp = Row("myname2", "myfilepath", "this is the NEW content")
             #self.insert(temp)
 
 
     def createDb(self):
         logger.warn('Creating the database tables')
-        self.c.execute(CREATE_TABLE)
+        self.cursor.execute(CREATE_TABLE)
         self.conn.commit()
         return self.doesDbExist()
 
     def count(self):
-        self.c.execute('SELECT COUNT(id) FROM TextData;')
-        result = self.c.fetchone()[0]
+        self.cursor.execute('SELECT COUNT(id) FROM TextData;')
+        result = self.cursor.fetchone()[0]
         return result
 
     def insert(self, row):
         try:
             data = (row.name, row.filepath, row.data)
-            self.c.execute('INSERT INTO TextData (name, filepath, data) VALUES (?, ?, ?);', data)
+            self.cursor.execute('INSERT INTO TextData (name, filepath, data) VALUES (?, ?, ?);', data)
             self.conn.commit()
 
         except Exception as err:
             logger.error('Insert Failed, Error: %s', str(err))
+
+    def findByName(self, name):
+        self.cursor.execute('SELECT * FROM TextData WHERE name = ?;', (name,))
+        result = self.cursor.fetchone()
+        return rowFromResult(result)
+        #return map(rowFromResult, result)
