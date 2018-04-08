@@ -7,8 +7,8 @@ DB_NAME="data.db"
 
 # TODO create separate SQL script
 CREATE_TABLE="""CREATE TABLE TextData(
-    id UNSIGNED BIG INT PRIMARY KEY NOT NULL,
-    created INT NOT NULL,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     name VARCHAR(255),
     filepath VARCHAR(255),
     data TEXT
@@ -17,6 +17,10 @@ CREATE_TABLE="""CREATE TABLE TextData(
 class Row(object):
     __slots__ = 'id', 'created', 'name', 'filepath', 'data'
 
+    def __init__(self, name, filepath, data):
+        self.name= name
+        self.filepath = filepath
+        self.data = data
 
 class DataModel(object):
     conn = None
@@ -41,6 +45,8 @@ class DataModel(object):
         else:
             logger.info('Database initialized OK')
             logger.info('Database rowcount: %s', self.count())
+            #temp = Row("myname", "myfilepath", "this is the content")
+            #self.insert(temp)
 
 
     def createDb(self):
@@ -54,4 +60,11 @@ class DataModel(object):
         result = self.c.fetchone()[0]
         return result
 
-    
+    def insert(self, row):
+        try:
+            data = (row.name, row.filepath, row.data)
+            self.c.execute('INSERT INTO TextData (name, filepath, data) VALUES (?, ?, ?);', data)
+            self.conn.commit()
+
+        except Exception as err:
+            logger.error('Insert Failed, Error: %s', str(err))
