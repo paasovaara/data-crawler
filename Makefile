@@ -15,5 +15,7 @@ test:
 	py.test --verbose --color=yes test
 
 run-import:
-	pipenv run python3 ./importer/main.py
-    
+	pipenv run python3 ./importer/main.py import
+
+run-process:
+	pipenv run python3 ./importer/main.py process

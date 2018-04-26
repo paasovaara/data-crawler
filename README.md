@@ -27,3 +27,9 @@ Running:
 ```
 make run-import
 ```
+
+OR
+
+```
+make run-process
+```
