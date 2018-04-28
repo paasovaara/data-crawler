@@ -39,3 +39,10 @@ def readWordsFromFile(filename):
             for word in line.split(' '):
                 words.append(word.strip())
         return list(filter(lambda w: w != "", words))
+
+def safeReadWordsFromFile(filename):
+    try:
+        return readWordsFromFile(filename)
+    except OSError as e:
+        logger.error('cannot read file %s, reason: %s', filename, e.strerror)
+        return []
