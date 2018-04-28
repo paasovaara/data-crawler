@@ -25,7 +25,7 @@ Running:
 OR
 
 ```
-./run_process.sh
+./run_process.sh <filetoprocess>
 ```
 
 ## TODO
@@ -35,5 +35,3 @@ https://www.analyticsvidhya.com/blog/2017/01/ultimate-guide-to-understand-implem
 see
 - snowball stemmer (should have finnish)
 - python nltk
-
-

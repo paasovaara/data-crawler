@@ -61,9 +61,6 @@ class DataModel(object):
         else:
             logger.info('Database initialized OK')
             logger.info('Database rowcount: %s', self.count())
-            #temp = self.findByName('main.py')
-            #logger.info(str(temp))
-
             return True
 
 
@@ -89,7 +86,7 @@ class DataModel(object):
             return False
 
     def findByName(self, name):
-        self.cursor.execute('SELECT * FROM TextData WHERE name = ?;', (name,))
+        query = '%' + name.lower() + '%'
+        self.cursor.execute('SELECT * FROM TextData WHERE LOWER(name) LIKE ?;', (query,))
         result = self.cursor.fetchone()
         return rowFromResult(result)
-        #return map(rowFromResult, result)

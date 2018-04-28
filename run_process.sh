@@ -1,3 +1,4 @@
 #!/bin/bash
-python ./importer/main.py process --name yournamehere
+NAME=${1:-foo}
+python ./importer/main.py process --name $NAME
 
