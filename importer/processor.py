@@ -9,9 +9,13 @@ class Processor(object):
     model = DataModel()
 
     def process(self, name):
+        keywords = fileutils.safeReadWordsFromFile('conf/keywords.txt')
+        for key in keywords:
+            logger.debug(key)
 
-        for test in fileutils.safeReadWordsFromFile('conf/keywords.txt'):
-            logger.info(test)
+        noise = fileutils.safeReadWordsFromFile('conf/noise.txt')
+        for key in noise:
+            logger.debug(key)
 
         logger.info('processing %s', name)
         row = self.model.findByName(name)
@@ -20,5 +24,9 @@ class Processor(object):
         else:
             logger.error('no data for name %s', name)
 
+        #TODO Next:
+        #- MVP: just calculate the words from file.
+        #- then apply  stemming and lemming and allthat
 
-    #def readKeywords(filename):
+        # For merging (prod ready)
+        #- add app argument to specify the keyword and noise file
