@@ -8,28 +8,32 @@ folder /scripts contain shell scripts to crawl and format the material into text
 
 ## Importer
 
-Python scripts to import the text files into SQLite database. Use [Makefile](Makefile) to setup commands.
+Python scripts to import the text files into SQLite database. Use scripts to setup and launch.
 
 Init:
 
 ```
-make init
-```
-
-Clean:
-
-```
-make clean
+./init.sh
 ```
 
 Running:
 
 ```
-make run-import
+./run_import.sh
 ```
 
 OR
 
 ```
-make run-process
+./run_process.sh
 ```
+
+## TODO
+word stemming and lemmatization
+https://www.analyticsvidhya.com/blog/2017/01/ultimate-guide-to-understand-implement-natural-language-processing-codes-in-python/
+
+see
+- snowball stemmer (should have finnish)
+- python nltk
+
+
