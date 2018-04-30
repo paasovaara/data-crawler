@@ -29,16 +29,20 @@ def findFiles(rootPath, fileSuffix='.txt'):
     return list
 
 
+def splitLinesIntoWords(lines):
+    # ARGH, WHY DOES NOT FLATMAP EXIST!??
+    words = []
+    for line in lines:
+        for word in line.split(' '):
+            words.append(word.strip())
+    return list(filter(lambda w: w != "", words))
+
+
 def readWordsFromFile(filename):
     logger.debug('reading files from %s', filename)
     with open(filename) as file:
         lines = file.readlines()
-        # ARGH, WHY DOES NOT FLATMAP EXIST!??
-        words = []
-        for line in lines:
-            for word in line.split(' '):
-                words.append(word.strip())
-        return list(filter(lambda w: w != "", words))
+        return splitLinesIntoWords(lines)
 
 def safeReadWordsFromFile(filename):
     try:
