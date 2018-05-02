@@ -36,9 +36,10 @@ class Processor(object):
 
     def process(self, name):
         logger.info('processing %s', name)
-        row = self.model.findByName(name)
-        if (row):
-            self.processRow(row, self.keywords, self.noise)
+        rows = self.model.findByName(name)
+        if (rows):
+            for row in rows:
+                self.processRow(row, self.keywords, self.noise)
         else:
             logger.error('no data for name %s', name)
 
@@ -48,7 +49,7 @@ class Processor(object):
 
         content = row.data.split('\n')
         words = fileutils.splitLinesIntoWords(content)
-        logger.debug('word count in document: %d', len(words))
+        #logger.debug('word count in document: %d', len(words))
 
         counter = Counter()
         for word in words:

@@ -88,8 +88,8 @@ class DataModel(object):
     def findByName(self, name):
         query = '%' + name.lower() + '%'
         self.cursor.execute('SELECT * FROM TextData WHERE LOWER(name) LIKE ? ORDER BY name DESC;', (query,))
-        result = self.cursor.fetchone()
-        return rowFromResult(result)
+        result = self.cursor.fetchall()
+        return map(rowFromResult, result)
 
     def list(self):
         self.cursor.execute('SELECT name FROM TextData ORDER BY name;')
