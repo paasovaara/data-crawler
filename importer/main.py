@@ -4,6 +4,7 @@ import argparse
 
 from importer import Importer
 from processor import Processor
+from datamodel import DataModel
 
 logger = logging.getLogger()
 handler = logging.StreamHandler()
@@ -25,7 +26,7 @@ if __name__ == '__main__':
     logger.info('Launching app')
 
     parser = argparse.ArgumentParser(description='Import or process data')
-    parser.add_argument('cmd', type=str, choices=['import', 'process'],
+    parser.add_argument('cmd', type=str, choices=['import', 'process', 'list'],
         help='Application mode')
 
     parser.add_argument('--root', type=str, default='.',
@@ -50,3 +51,8 @@ if __name__ == '__main__':
             startProcess(args.name, args.language, args.keywordfile, args.noisefile)
         else:
             logger.info('TODO Process ALL :)')
+    elif(args.cmd == 'list'):
+        model = DataModel()
+        if (model.initialize()):
+            items = model.list()
+            logger.info('\n'.join(items))

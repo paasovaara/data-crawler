@@ -90,3 +90,9 @@ class DataModel(object):
         self.cursor.execute('SELECT * FROM TextData WHERE LOWER(name) LIKE ? ORDER BY name DESC;', (query,))
         result = self.cursor.fetchone()
         return rowFromResult(result)
+
+    def list(self):
+        self.cursor.execute('SELECT name FROM TextData ORDER BY name;')
+        result = self.cursor.fetchall()
+        names = [row[0] for row in result]
+        return names
