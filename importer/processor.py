@@ -3,6 +3,7 @@ from datamodel import DataModel
 from datamodel import Row
 import fileutils
 import time
+from collections import Counter
 
 from nltk.stem.snowball import SnowballStemmer
 
@@ -19,18 +20,18 @@ class Processor(object):
         logger.info('creating stemmer for language %s', language)
         self.keywords = self.prepareWords(keywordfile)
         self.noise = self.prepareWords(noisefile)
-        
+
     def prepareWords(self, file):
         words = fileutils.safeReadWordsFromFile(file)
         wordSet = set()
         for w in words:
-            prepared = self.prepare(w.lower())
+            prepared = self.prepare(w)
             logger.info(w + ' => ' + prepared)
             wordSet.add(prepared)
         return wordSet
 
     def prepare(self, word):
-        return self.stemmer.stem(word)
+        return self.stemmer.stem(word.strip().lower())
 
 
     def process(self, name):
@@ -41,22 +42,23 @@ class Processor(object):
         else:
             logger.error('no data for name %s', name)
 
-        #TODO Next:
-        #- MVP: just calculate the words from file.
-        #- then apply  stemming and lemming and allthat
-
-        # For merging (prod ready)
-        #- add app argument to specify the keyword and noise file
-
     def processRow(self, row, keywords, noise):
         logger.debug('processing row: %s', row.name)
         start = time.time()
-        # Rows to words
-        # to lowercase
-        # stem
-        # compare if found in keywords.
+
+        content = row.data.split('\n')
+        words = fileutils.splitLinesIntoWords(content)
+        logger.debug('word count in document: %d', len(words))
+
+        counter = Counter()
+        for word in words:
+            wordLc = self.prepare(word)
+            if (not wordLc in noise and wordLc in keywords):
+                counter[wordLc] += 1
 
         end = time.time()
         elapsed = end - start
 
         logger.debug('row %s processed in %.2f seconds', row.name, elapsed)
+        logger.info(str(counter))
+        #logger.debug(row.data)
