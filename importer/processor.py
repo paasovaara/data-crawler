@@ -4,6 +4,7 @@ from datamodel import Row
 import fileutils
 import time
 from collections import Counter
+import re
 
 from nltk.stem.snowball import SnowballStemmer
 
@@ -14,10 +15,28 @@ def printDict(d):
     for key in sortedKeys:
         print(key, ' => ', d[key])
 
+# TODO refactor this. now tries to parse a year from the filename
+# think how to do this modulary, add decorators etc.?
+def parseYearFromName(name):
+    p = re.compile(r'\d{4}')
+    m = p.search(name)
+    #logger.info(m)
+    if m:
+        return m.group()
+    else:
+        return ''
+
+def parsePrefixFromName(name):
+    prefix = name.split('_',1)[0]
+    if prefix:
+        return prefix
+    else:
+        return ''
+
+
 def formatForCSV(keywords, allCounters):
     sortedKeys = sorted(keywords)
-    headerRow = 'filename,' + ','.join(sortedKeys) + '\n'
-
+    headerRow = 'filename,prefix,year,' + ','.join(sortedKeys) + '\n'
     valueRows = []
 
     sortedNames = sorted(allCounters.keys())
@@ -33,8 +52,12 @@ def formatRowForCSV(name, keywords, counter):
     for key in sortedKeys:
         sortedValues.append(str(counter[key]))
 
+    #TODO refactor
+    year = parseYearFromName(name)
+    prefix = parsePrefixFromName(name)
+
     row = ','.join(sortedValues)
-    return name + ',' + row
+    return name + ',' + prefix + "," + year + "," + row
 
 class Processor(object):
 
