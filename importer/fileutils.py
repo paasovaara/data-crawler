@@ -37,12 +37,20 @@ def splitLinesIntoWords(lines):
             words.append(word.strip())
     return list(filter(lambda w: w != "", words))
 
-
 def readWordsFromFile(filename):
     logger.debug('reading files from %s', filename)
     with open(filename) as file:
         lines = file.readlines()
         return splitLinesIntoWords(lines)
+
+def writeToFile(filename, content):
+    try:
+        with open(filename, 'w') as file:
+            file.write(content)
+            
+    except OSError as e:
+        logger.error('cannot write to file %s, reason: %s', filename, e.strerror)
+        return False
 
 def safeReadWordsFromFile(filename):
     try:

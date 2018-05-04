@@ -9,6 +9,33 @@ from nltk.stem.snowball import SnowballStemmer
 
 logger = logging.getLogger()
 
+def printDict(d):
+    sortedKeys = sorted(d.keys())
+    for key in sortedKeys:
+        print(key, ' => ', d[key])
+
+def formatForCSV(keywords, allCounters):
+    sortedKeys = sorted(keywords)
+    headerRow = 'filename,' + ','.join(sortedKeys) + '\n'
+
+    valueRows = []
+
+    sortedNames = sorted(allCounters.keys())
+    for name in sortedNames:
+        valueRow = formatRowForCSV(name, sortedKeys, allCounters[name])
+        valueRows.append(valueRow)
+
+    return headerRow  + '\n'.join(valueRows) + '\n'
+
+def formatRowForCSV(name, keywords, counter):
+    sortedKeys = sorted(keywords)
+    sortedValues = []
+    for key in sortedKeys:
+        sortedValues.append(str(counter[key]))
+
+    row = ','.join(sortedValues)
+    return name + ',' + row
+
 class Processor(object):
 
     __slots__ = 'model', 'language', 'stemmer', 'keywords', 'noise'
@@ -38,13 +65,19 @@ class Processor(object):
         logger.info('processing %s', name)
         rows = self.model.findByName(name)
         if (rows):
+            all = dict()
             for row in rows:
-                self.processRow(row, self.keywords, self.noise)
+                counter = self.processRow(row, self.keywords, self.noise)
+                all[row.name] = counter
+
+            printDict(all)
+            csv = formatForCSV(self.keywords, all)
+            fileutils.writeToFile(name + '.csv', csv)
         else:
             logger.error('no data for name %s', name)
 
     def processRow(self, row, keywords, noise):
-        logger.debug('processing row: %s', row.name)
+        #logger.debug('processing row: %s', row.name)
         start = time.time()
 
         content = row.data.split('\n')
@@ -61,5 +94,6 @@ class Processor(object):
         elapsed = end - start
 
         logger.debug('row %s processed in %.2f seconds', row.name, elapsed)
-        logger.info(str(counter))
+        #logger.info(str(counter))
+        return counter
         #logger.debug(row.data)
