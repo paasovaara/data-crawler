@@ -10,10 +10,12 @@ from nltk.stem.snowball import SnowballStemmer
 
 logger = logging.getLogger()
 
+
 def printDict(d):
     sortedKeys = sorted(d.keys())
     for key in sortedKeys:
         print(key, ' => ', d[key])
+
 
 # TODO refactor this. now tries to parse a year from the filename
 # think how to do this modulary, add decorators etc.?
@@ -25,6 +27,7 @@ def parseYearFromName(name):
         return m.group()
     else:
         return ''
+
 
 def parsePrefixFromName(name):
     prefix = name.split('_',1)[0]
@@ -46,6 +49,7 @@ def formatForCSV(keywords, allCounters):
 
     return headerRow  + '\n'.join(valueRows) + '\n'
 
+
 def formatRowForCSV(name, keywords, counter):
     sortedKeys = sorted(keywords)
     sortedValues = []
@@ -58,6 +62,7 @@ def formatRowForCSV(name, keywords, counter):
 
     row = ','.join(sortedValues)
     return name + ',' + prefix + "," + year + "," + row
+
 
 class Processor(object):
 

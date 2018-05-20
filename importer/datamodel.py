@@ -14,6 +14,7 @@ CREATE_TABLE="""CREATE TABLE TextData(
     data TEXT
 );"""
 
+
 class Row(object):
     __slots__ = 'id', 'created', 'name', 'filepath', 'data'
 
@@ -27,7 +28,7 @@ class Row(object):
 
 
 def rowFromResult(result):
-    if result == None:
+    if result is None:
         return None
     row = Row(result[2], result[3], result[4])
     row.id = result[0]
@@ -47,13 +48,13 @@ class DataModel(object):
     def doesDbExist(self):
         self.cursor.execute('SELECT name FROM sqlite_master WHERE type=\'table\';')
         result = self.cursor.fetchall()
-        return (len(result) > 0)
+        return len(result) > 0
 
     def initialize(self):
         self.cursor.execute('SELECT name FROM sqlite_master WHERE type=\'table\';')
         result = self.cursor.fetchall()
-        if (not self.doesDbExist()):
-            if (not self.createDb()):
+        if not self.doesDbExist():
+            if not self.createDb():
                 logger.error('FAILED TO CREATE DATABASE')
                 return False
             else:
@@ -62,7 +63,6 @@ class DataModel(object):
             logger.info('Database initialized OK')
             logger.info('Database rowcount: %s', self.count())
             return True
-
 
     def createDb(self):
         logger.warn('Creating the database tables')

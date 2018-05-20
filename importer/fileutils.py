@@ -3,6 +3,7 @@ import os
 
 logger = logging.getLogger()
 
+
 class FileMetadata(object):
     __slots__ = 'path', 'name'
 
@@ -37,11 +38,13 @@ def splitLinesIntoWords(lines):
             words.append(word.strip())
     return list(filter(lambda w: w != "", words))
 
+
 def readWordsFromFile(filename):
     logger.debug('reading files from %s', filename)
     with open(filename) as file:
         lines = file.readlines()
         return splitLinesIntoWords(lines)
+
 
 def writeToFile(filename, content):
     try:
@@ -51,6 +54,7 @@ def writeToFile(filename, content):
     except OSError as e:
         logger.error('cannot write to file %s, reason: %s', filename, e.strerror)
         return False
+
 
 def safeReadWordsFromFile(filename):
     try:

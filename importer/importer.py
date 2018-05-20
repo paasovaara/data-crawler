@@ -6,11 +6,12 @@ from datamodel import Row
 
 logger = logging.getLogger()
 
+
 class Importer(object):
     model = DataModel()
 
     def launch(self, rootFolder):
-        if (not self.model.initialize()):
+        if not self.model.initialize():
             return
 
         files = fileutils.findFiles(rootFolder,'.txt')
@@ -29,7 +30,7 @@ class Importer(object):
                 #logger.info(data)
                 row = Row(file.name, file.path, data)
                 #self.insert(temp)
-                if (self.model.insert(row)):
+                if self.model.insert(row):
                     logger.info('file %s inserted successfully', file.path)
                 else:
                     logger.error('file %s FAILED to insert', file.path)

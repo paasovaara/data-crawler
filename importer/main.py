@@ -14,13 +14,16 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
+
 def startImport(root):
     i = Importer()
     i.launch(root)
 
+
 def startProcess(name, language, keywordfile, noisefile):
     p = Processor(language, keywordfile, noisefile)
     p.process(name)
+
 
 if __name__ == '__main__':
     logger.info('Launching app')
@@ -42,17 +45,17 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     print(args.root)
-    if (args.cmd == 'import'):
+    if args.cmd == 'import':
         logger.info('starting import from folder %s', args.root)
         startImport(args.root)
-    elif(args.cmd == 'process'):
-        if (args.name):
+    elif args.cmd == 'process':
+        if args.name:
             logger.info('TODO start processing (name: %s) :)', args.name)
             startProcess(args.name, args.language, args.keywordfile, args.noisefile)
         else:
             logger.info('TODO Process ALL :)')
-    elif(args.cmd == 'list'):
+    elif args.cmd == 'list':
         model = DataModel()
-        if (model.initialize()):
+        if model.initialize():
             items = model.list()
             logger.info('\n'.join(items))
