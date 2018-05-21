@@ -1,6 +1,6 @@
 import logging
-from datamodel import DataModel
-from datamodel import Row
+from models.datamodel import DataModel
+from models.datamodel import TextDataRow
 import fileutils
 import time
 from collections import Counter

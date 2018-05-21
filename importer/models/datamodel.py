@@ -6,16 +6,25 @@ DB_NAME="data.db"
 
 
 # TODO create separate SQL script
-CREATE_TABLE="""CREATE TABLE TextData(
+CREATE_TABLE="""CREATE TABLE IF NOT EXISTS 
+  TextData(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     name VARCHAR(255),
     filepath VARCHAR(255),
     data TEXT
 );"""
+CREATE_NUMERIC_TABLE="""CREATE TABLE IF NOT EXISTS 
+  NumericData(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    key VARCHAR(255) NOT NULL,
+    year INTEGER,
+    data 
+);"""
 
 
-class Row(object):
+class TextDataRow(object):
     __slots__ = 'id', 'created', 'name', 'filepath', 'data'
 
     def __init__(self, name, filepath, data):
@@ -30,7 +39,7 @@ class Row(object):
 def rowFromResult(result):
     if result is None:
         return None
-    row = Row(result[2], result[3], result[4])
+    row = TextDataRow(result[2], result[3], result[4])
     row.id = result[0]
     row.created = result[1]
     #logger.info(str(row))
@@ -67,6 +76,8 @@ class DataModel(object):
     def createDb(self):
         logger.warn('Creating the database tables')
         self.cursor.execute(CREATE_TABLE)
+        self.conn.commit()
+        self.cursor.execute(CREATE_NUMERIC_TABLE)
         self.conn.commit()
         return self.doesDbExist()
 

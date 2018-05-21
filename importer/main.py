@@ -4,7 +4,7 @@ import argparse
 
 from importer import Importer
 from processor import Processor
-from datamodel import DataModel
+from models.datamodel import DataModel
 
 logger = logging.getLogger()
 handler = logging.StreamHandler()

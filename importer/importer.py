@@ -1,8 +1,7 @@
 import logging
 import fileutils
-import io
-from datamodel import DataModel
-from datamodel import Row
+from models.datamodel import DataModel
+from models.datamodel import TextDataRow
 
 logger = logging.getLogger()
 
@@ -28,7 +27,7 @@ class Importer(object):
             with open(file.path,'r') as f:
                 data = f.read()
                 #logger.info(data)
-                row = Row(file.name, file.path, data)
+                row = TextDataRow(file.name, file.path, data)
                 #self.insert(temp)
                 if self.model.insert(row):
                     logger.info('file %s inserted successfully', file.path)
