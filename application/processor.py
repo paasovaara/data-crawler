@@ -27,7 +27,7 @@ def formatForCSV(keywords, allCounters, mode):
     if mode == ProcessMode.ROW:
         return csv_formatter.rowFormatForCSV(keywords, allCounters)
     else:
-        return ''
+        return csv_formatter.colFormatForCSV(keywords, allCounters)
 
 
 class Processor(object):
@@ -54,7 +54,7 @@ class Processor(object):
     def prepare(self, word):
         return self.stemmer.stem(word.strip().lower())
 
-    def process(self, name, mode=ProcessMode.ROW):
+    def process(self, name, mode=ProcessMode.COL):
         logger.info('processing %s', name)
         rows = self.model.findByName(name)
         if rows:
