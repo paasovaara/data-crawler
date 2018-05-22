@@ -14,14 +14,6 @@ CREATE_TABLE="""CREATE TABLE IF NOT EXISTS
     filepath VARCHAR(255),
     data TEXT
 );"""
-CREATE_NUMERIC_TABLE="""CREATE TABLE IF NOT EXISTS 
-  NumericData(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    key VARCHAR(255) NOT NULL,
-    year INTEGER,
-    data 
-);"""
 
 
 class TextDataRow(object):
@@ -76,8 +68,6 @@ class DataModel(object):
     def createDb(self):
         logger.warn('Creating the database tables')
         self.cursor.execute(CREATE_TABLE)
-        self.conn.commit()
-        self.cursor.execute(CREATE_NUMERIC_TABLE)
         self.conn.commit()
         return self.doesDbExist()
 
