@@ -1,4 +1,6 @@
 #!/bin/bash
 source .env/bin/activate
-python ./importer/main.py import --root .
+FOLDER=${1:-.}
+
+python ./application/main.py import --root $FOLDER
 
