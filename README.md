@@ -4,6 +4,13 @@ This project contains tools to crawl material for later endeavors, f.ex machine 
 At the moment the idea is to enable crawling pdf data and import that as text data for nlp. 
 Next step is to augment that with numeric data.
 
+## Bootstrapping
+
+- Required tools: Python3.6, pip and virtualenv. 
+- Dependencies: nltk (specially SnowballStemmer). 
+You can use [this simple snippet](/application/init_nltk.py) for invoking the installer (or just see online instructions)
+
+
 ## Scripts
 
 folder /scripts contain shell scripts to crawl and format the material into text files.
