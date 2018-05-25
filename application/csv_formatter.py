@@ -96,7 +96,7 @@ def colFormatForCSV(keywords, allCounters):
                     count = str(counter[keyWord])
                     dataRow.append(count)
                 except IndexError:
-                    dataRow.append('0')
+                    dataRow.append('na')
 
         dataRows.append(','.join(dataRow))
 
