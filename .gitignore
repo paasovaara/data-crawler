@@ -89,6 +89,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.idea/
 
 # Spyder project settings
 .spyderproject
@@ -106,4 +107,5 @@ venv.bak/
 
 # APP SPECIFIC
 *.db
+*.csv
 
